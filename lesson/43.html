@@ -101,18 +101,7 @@
             }
             return parts;
         }
-        
-        // Override the fetchWithProgress to handle StreamingAssets correctly
-        const originalFetch = window.fetch;
-        window.fetch = function(url, options) {
-            if (typeof url === 'string' && url.includes('StreamingAssets/') && !url.startsWith('http')) {
-                // Extract just the filename from the path
-                const filename = url.split('/').pop();
-                url = 'StreamingAssets/' + filename;
-            }
-            return originalFetch(url, options);
-        };
-        
+
         (async () => {
             const dataParts = getParts("Build/WebGL.data", 3);
             const wasmParts = getParts("Build/WebGL.wasm", 3);
@@ -127,7 +116,7 @@
                 dataUrl: dataUrl,
                 frameworkUrl: "Build/WebGL.framework.js",
                 codeUrl: wasmUrl,
-                streamingAssetsUrl: "StreamingAssets",
+                streamingAssetsUrl: "./StreamingAssets",
                 companyName: "Basically Games",
                 productName: "Baldi's Basics Classic Remastered",
                 productVersion: "1.1",
