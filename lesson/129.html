@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas | College Courses | Paid Lesson</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+
+        :root {
+            --primary-orange: #33D7FF;
+            --primary-orange-rgb: 51, 215, 255;
+            --dark-bg: #060714;
+            --light-text: #EAFCFF;
+            --gray-text: #89C7D1;
+            --accent-orange: #33D7FF;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--light-text);
+            overflow-x: hidden;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        #matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: .3;
+        }
+
+        .auth-container {
+            background: linear-gradient(145deg, #151515, #0a0a0a);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(var(--primary-orange-rgb), 0.4);
+            width: 100%;
+            max-width: 500px;
+            position: relative;
+            z-index: 1;
+            border: 1px solid var(--primary-orange);
+            margin: 20px;
+        }
+
+        h2 {
+            color: var(--primary-orange);
+            text-align: center;
+            font-size: 1.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(var(--primary-orange-rgb), 0.7);
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding: 15px 30px;
+            background: linear-gradient(145deg, rgba(var(--primary-orange-rgb), 0.1), rgba(10, 10, 10, 0.3));
+            border: 1px solid var(--primary-orange);
+            border-radius: 8px;
+            box-shadow: 0 0 25px rgba(var(--primary-orange-rgb), 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        h2::before,
+        h2::after {
+            content: '[';
+            color: var(--accent-orange);
+            text-shadow: 0 0 10px rgba(var(--primary-orange-rgb), 0.7);
+            margin-right: 10px;
+        }
+
+        h2::after {
+            content: ']';
+            margin-left: 10px;
+            margin-right: 0;
+        }
+
+        .terminal-prompt {
+            background-color: rgba(10, 10, 10, .8);
+            border: 1px solid var(--primary-orange);
+            border-radius: 5px;
+            padding: 15px;
+            margin: 20px 0;
+            box-shadow: 0 0 15px rgba(var(--primary-orange-rgb), .3);
+        }
+
+        .prompt-line {
+            margin: 8px 0;
+            color: var(--primary-orange);
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--primary-orange);
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.75rem;
+            background: rgba(20, 20, 20, .8);
+            border: 2px solid var(--primary-orange);
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 1rem;
+            color: var(--light-text);
+            font-family: 'Courier New', monospace;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            box-shadow: 0 0 15px rgba(var(--primary-orange-rgb), 0.6);
+            border-color: var(--accent-orange);
+        }
+
+        input::placeholder {
+            color: var(--gray-text);
+        }
+
+        button {
+            width: 100%;
+            padding: 0.75rem;
+            background: rgba(var(--primary-orange-rgb), .2);
+            color: var(--primary-orange);
+            border: 1px solid var(--primary-orange);
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: 'Courier New', monospace;
+        }
+
+        button:hover {
+            background: rgba(var(--primary-orange-rgb), .3);
+            box-shadow: 0 0 15px var(--primary-orange);
+            transform: translateY(-2px);
+        }
+
+        .error {
+            color: #e74c3c;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            text-align: center;
+            text-shadow: 0 0 5px rgba(231, 76, 60, 0.5);
+        }
+
+        .success {
+            color: #27ae60;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            text-align: center;
+            text-shadow: 0 0 5px rgba(39, 174, 96, 0.5);
+        }
+
+        #lessonContent {
+            display: none;
+            background: linear-gradient(145deg, #151515, #0a0a0a);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(var(--primary-orange-rgb), 0.4);
+            max-width: 1200px;
+            width: 90%;
+            position: relative;
+            z-index: 1;
+            border: 1px solid var(--primary-orange);
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        #lessonContent h1 {
+            color: var(--primary-orange);
+            text-shadow: 0 0 10px rgba(var(--primary-orange-rgb), 0.7);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        #lessonContent p {
+            color: var(--gray-text);
+            line-height: 1.6;
+        }
+
+        .theme-toggle-container {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 10;
+        }
+
+        .theme-toggle-btn {
+            background: rgba(20, 20, 20, .8);
+            color: var(--primary-orange);
+            border: 1px solid var(--primary-orange);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 10px var(--primary-orange);
+        }
+
+        .theme-toggle-btn:hover {
+            background: rgba(var(--primary-orange-rgb), .2);
+            box-shadow: 0 0 15px var(--primary-orange);
+            transform: scale(1.1);
+        }
+
+        /* Theme variations */
+        .theme-rainbow {
+            --primary-orange: #ff0080;
+            --primary-orange-rgb: 255, 0, 128;
+            --accent-orange: #ff00ff;
+        }
+
+        .theme-cyber-green {
+            --primary-orange: #00ff00;
+            --primary-orange-rgb: 0, 255, 0;
+            --accent-orange: #00cc00;
+        }
+
+        .theme-ice-blue {
+            --primary-orange: #00ccff;
+            --primary-orange-rgb: 0, 204, 255;
+            --accent-orange: #0088cc;
+        }
+
+        .theme-solarized {
+            --primary-orange: #2aa198;
+            --primary-orange-rgb: 42, 161, 152;
+            --accent-orange: #268bd2;
+        }
+
+        .theme-purple-haze {
+            --primary-orange: #9b59b6;
+            --primary-orange-rgb: 155, 89, 182;
+            --accent-orange: #6c3483;
+        }
+
+        .theme-amber {
+            --primary-orange: #c27c15;
+            --primary-orange-rgb: 194, 124, 21;
+            --accent-orange: #e69500;
+        }
+
+        #requestEmbed {
+            width: 100%;
+            min-height: 500px;
+            position: relative;
+        }
+
+        #requestEmbed iframe {
+            width: 100%;
+            height: 100%;
+            min-height: 500px;
+        }
+
+        @media (max-width: 768px) {
+            .auth-container {
+                padding: 1.5rem;
+                max-width: 95%;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            #lessonContent {
+                padding: 1.5rem;
+                max-width: 95%;
+            }
+
+            #requestEmbed {
+                min-height: 400px;
+            }
+
+            #requestEmbed iframe {
+                min-height: 400px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <canvas id="matrix-bg"></canvas>
+    <div id="requestEmbed">
+        <iframe data-tally-src="https://tally.so/embed/9qNbGp?alignLeft=1&transparentBackground=1&dynamicHeight=1"
+            loading="lazy" width="100%" height="100" frameborder="0" marginheight="0" marginwidth="0"
+            title="Lesson request: The Return to Freddy's 2 Rebuilt request"></iframe>
+    </div>
+
+    <script>
+        // Tally embed loader (original)
+        var d = document, w = "https://tally.so/widgets/embed.js", v = function () { "undefined" != typeof Tally ? Tally.loadEmbeds() : d.querySelectorAll("iframe[data-tally-src]:not([src])").forEach((function (e) { e.src = e.dataset.tallySrc })) }; if ("undefined" != typeof Tally) v(); else if (d.querySelector('script[src="' + w + '"]') == null) { var s = d.createElement("script"); s.src = w, s.onload = v, s.onerror = v, d.body.appendChild(s); }
+
+        // Hide the embed container after authentication
+        (function () {
+            function hideIfAuth() {
+                var auth = document.getElementById('authForm');
+                var container = document.getElementById('requestEmbed');
+                var lesson = document.getElementById('lessonContent');
+                if (!container) return;
+
+                // If lesson already visible or auth hidden, hide immediately
+                if ((lesson && lesson.style.display === 'block') || (auth && auth.style.display === 'none')) {
+                    container.style.display = 'none';
+                    return;
+                }
+
+                if (!auth) {
+                    // If auth element not yet in DOM, wait for it
+                    document.addEventListener('DOMContentLoaded', hideIfAuth);
+                    return;
+                }
+
+                // Observe style changes on authForm to detect when it's hidden
+                var mo = new MutationObserver(function (mutations) {
+                    mutations.forEach(function (m) {
+                        if (m.attributeName === 'style') {
+                            if (auth.style.display === 'none' || (lesson && lesson.style.display === 'block')) {
+                                container.style.display = 'none';
+                                mo.disconnect();
+                            }
+                        }
+                    });
+                });
+                mo.observe(auth, { attributes: true, attributeFilter: ['style'] });
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', hideIfAuth);
+            } else {
+                hideIfAuth();
+            }
+        })();
+    </script>
+    <div class="or-container" id="or">
+        <h1>or</h1>
+    </div>
+    <div class="auth-container" id="authForm">
+        <h2>Lesson: TRTF2</h2>
+        <div class="terminal-prompt">
+            <p class="prompt-line">&gt; SYSTEM: AUTHENTICATION REQUIRED</p>
+            <p class="prompt-line">&gt; STATUS: LOCKED</p>
+        </div>
+        <div class="form-group">
+            <label for="password">&gt; Enter Password:</label>
+            <input type="password" id="password" placeholder="••••••••" autocomplete="off">
+        </div>
+        <button onclick="authenticate()">[ ACCESS LESSON ]</button>
+        <div id="message"></div>
+    </div>
+    <div>
+        <iframe id="lessonFrame" class="lesson-frame" frameborder="0" src=""
+            sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-modals allow-downloads"
+            allow="fullscreen"
+            style="position:fixed;top:0;left:0;right:0;bottom:0;width:100%;height:100%;border:0;margin:0;padding:0;z-index:9999;background:#000;"></iframe>
+    </div>
+    <script>
+        document.getElementById('lessonFrame').style.display = 'none';
+        // Matrix background animation
+        const canvas = document.getElementById('matrix-bg');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        const chars = '01';
+        const charArray = chars.split('');
+        const fontSize = 14;
+        const columns = canvas.width / fontSize;
+        const drops = [];
+        for (let x = 0; x < columns; x++) {
+            drops[x] = 1;
+        }
+
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(10, 10, 10, 0.04)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = window.matrixColor || '#33D7FF';
+            ctx.font = fontSize + 'px monospace';
+            for (let i = 0; i < drops.length; i++) {
+                const text = charArray[Math.floor(Math.random() * charArray.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+        setInterval(drawMatrix, 35);
+        window.addEventListener('resize', function () {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        const PASSWORD = 'YXRsdnd2cHZs';
+
+        function decodePassword(encoded) {
+            return atob(encoded);
+        }
+
+        // Load lesson content
+        function loadLesson(url = '') {
+            if (url === null || url === undefined || url === '') {
+                showMessage(`&gt; ERROR: Can't Open Lesson`, 'error');
+                return;
+            }
+            document.getElementById('authForm').style.display = 'none';
+            document.getElementById('or').style.display = 'none';
+            document.getElementById('lessonFrame').style.display = 'block';
+
+            fetch(url)
+                .then(response => response.text())
+                .then(html => {
+                    const iframe = document.getElementById('lessonFrame');
+                    iframe.srcdoc = html;
+                })
+                .catch(error => console.error('Error loading content:', error));
+        }
+
+        // Authenticate
+        function authenticate() {
+            const password = document.getElementById('password').value;
+
+            if (!password) {
+                showMessage('&gt; ERROR: Password required', 'error');
+                return;
+            }
+
+            const correctPassword = decodePassword(PASSWORD);
+
+            if (password === correctPassword) {
+                showMessage('&gt; ACCESS GRANTED...', 'success');
+                localStorage.setItem('Lesson 129', PASSWORD)
+                setTimeout(() => {
+                    loadLesson();
+                }, 500);
+            } else {
+                showMessage('&gt; ACCESS DENIED: Invalid credentials', 'error');
+                document.getElementById('password').value = '';
+            }
+        }
+
+        // Show message
+        function showMessage(text, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.innerHTML = text;
+            messageDiv.className = type;
+        }
+
+        // Handle enter key
+        document.getElementById('password').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                authenticate();
+            }
+        });
+    </script>
+</body>
+
+</html>
