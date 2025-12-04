@@ -429,22 +429,17 @@
         }
 
         // Load lesson content
+        // ...existing code...
         function loadLesson(url = '') {
-            if (url === null || url === undefined || url === '') {
+            if (!url) {
                 showMessage(`&gt; ERROR: Can't Open Lesson`, 'error');
                 return;
             }
             document.getElementById('authForm').style.display = 'none';
             document.getElementById('or').style.display = 'none';
-            document.getElementById('lessonFrame').style.display = 'block';
-
-            fetch(url)
-                .then(response => response.text())
-                .then(html => {
-                    const iframe = document.getElementById('lessonFrame');
-                    iframe.srcdoc = html;
-                })
-                .catch(error => console.error('Error loading content:', error));
+            const iframe = document.getElementById('lessonFrame');
+            iframe.style.display = 'block';
+            iframe.src = url; // use src instead of fetch + srcdoc
         }
 
         // Authenticate
@@ -462,7 +457,7 @@
                 showMessage('&gt; ACCESS GRANTED...', 'success');
                 localStorage.setItem('Lesson 129', PASSWORD)
                 setTimeout(() => {
-                    loadLesson();
+                    loadLesson('https://amazingtutoringhelppremium.github.io/Advance-Calculus-Tutor/advance/1.html?hijkvqbpixlvov5cmrGSg2=YXRsdnd2cHZz&sqmPVruHSRZg=LfGjkMME4BEH&bDj9MJtDPaPG&c4Eas5pxACfT&BXucwFgxQutd');
                 }, 500);
             } else {
                 showMessage('&gt; ACCESS DENIED: Invalid credentials', 'error');
