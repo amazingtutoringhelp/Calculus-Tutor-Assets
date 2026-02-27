@@ -66,7 +66,7 @@
             dataUrl: buildUrl + "/Web GL.data.unityweb",
             frameworkUrl: buildUrl + "/Web GL.framework.js.unityweb",
             codeUrl: buildUrl + "/Web GL.wasm.unityweb",
-        streamingAssetsUrl: "StreamingAssets",
+            streamingAssetsUrl: new URL("StreamingAssets", document.baseURI).href,
             companyName: "FoXSkr",
             productName: "Contra",
             productVersion: "1.9.4"

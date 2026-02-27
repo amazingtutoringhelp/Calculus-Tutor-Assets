@@ -107,7 +107,7 @@
         dataUrl: "Build/StealMeme_Crazy.data",
         frameworkUrl: "Build/StealMeme_Crazy.framework.js",
         codeUrl: "Build/StealMeme_Crazy.wasm",
-        streamingAssetsUrl: "StreamingAssets",
+        streamingAssetsUrl: new URL("StreamingAssets", document.baseURI).href,
         companyName: "Steal Brainrot Online",
         productName: "Steal Brainrot Online",
         productVersion: "1.0.0"

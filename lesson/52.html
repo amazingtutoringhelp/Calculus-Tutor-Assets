@@ -53,7 +53,7 @@
     const config = {
         dataUrl: buildUrl + "/zombieshooterdone.data.br",
         frameworkUrl: buildUrl + "/zombieshooterdone.framework.js",
-        streamingAssetsUrl: "StreamingAssets",
+        streamingAssetsUrl: new URL("StreamingAssets", document.baseURI).href,
         companyName: "OnHitDev",
         productName: "They Are Coming",
         productVersion: "1.19"

@@ -102,7 +102,7 @@
 					dataUrl: dataUrl,
 					frameworkUrl: buildUrl + "/Kindergarten3Port.framework.js",
 					codeUrl: wasmUrl,
-					streamingAssetsUrl: "StreamingAssets",
+					streamingAssetsUrl: new URL("StreamingAssets", document.baseURI).href,
 					companyName: "Con Man Games",
 					productName: "Kindergarten3",
 					productVersion: "0.01",

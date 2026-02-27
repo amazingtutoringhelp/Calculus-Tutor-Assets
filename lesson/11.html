@@ -120,7 +120,7 @@
                 dataUrl: dataUrl,
                 frameworkUrl: buildUrl + "/GettingOverIt.framework.js",
                 codeUrl: wasmUrl,
-                streamingAssetsUrl: "StreamingAssets",
+                streamingAssetsUrl: new URL("StreamingAssets", document.baseURI).href,
                 companyName: "Bennett Foddy",
                 productName: "Getting Over It",
                 productVersion: "1.7",

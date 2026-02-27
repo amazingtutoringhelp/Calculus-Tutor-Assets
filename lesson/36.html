@@ -51,7 +51,7 @@
                 dataUrl: dataUrl,
                 frameworkUrl: buildUrl + "/SideEffectsWebBuild_V0.1.framework.js",
                 codeUrl: wasmUrl,
-                streamingAssetsUrl: "StreamingAssets",
+                streamingAssetsUrl: new URL("StreamingAssets", document.baseURI).href,Assets", document.baseURI).href,
                 companyName: "DefaultCompany",
                 productName: "Roulette",
                 productVersion: "0.1.0",

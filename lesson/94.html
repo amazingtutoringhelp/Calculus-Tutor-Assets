@@ -66,7 +66,7 @@
         dataUrl: buildUrl + "/Zombotron.data.unityweb",
         frameworkUrl: buildUrl + "/Zombotron.framework.js.unityweb",
         codeUrl: buildUrl + "/Zombotron.wasm.unityweb",
-        streamingAssetsUrl: "StreamingAssets",
+        streamingAssetsUrl: new URL("StreamingAssets", document.baseURI).href,Assets", document.baseURI).href,
         companyName: "AntKarlov Games",
         productName: "Zombotron",
         productVersion: "1.4.1",

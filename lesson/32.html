@@ -202,7 +202,7 @@
             	dataUrl: "https://rawcdn.githack.com/bubbls/UGS-Assets/c8207b769940d128480c318e32b5d366a665db5b/highway%20racer%202/Build/game.data.unityweb",
             	frameworkUrl: "https://rawcdn.githack.com/bubbls/UGS-Assets/c8207b769940d128480c318e32b5d366a665db5b/highway%20racer%202/Build/game.framework.js.unityweb",
             	codeUrl: "https://rawcdn.githack.com/bubbls/UGS-Assets/c8207b769940d128480c318e32b5d366a665db5b/highway%20racer%202/Build/game.wasm.unityweb",
-            	streamingAssetsUrl: "StreamingAssets",
+            	streamingAssetsUrl: new URL("StreamingAssets", document.baseURI).href,
             	companyName: "FreezeNova",
             	productName: "Crazy Drifter",
             	productVersion: "0.1",

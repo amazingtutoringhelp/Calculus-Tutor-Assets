@@ -104,7 +104,7 @@
         dataUrl: "Build/Super star car v1.21.data",
         frameworkUrl: "Build/Super star car v1.21.framework.js",
         codeUrl: "Build/Super star car v1.21.wasm",
-        streamingAssetsUrl: "StreamingAssets",
+        streamingAssetsUrl: new URL("StreamingAssets", document.baseURI).href,
         companyName: "Super Star Car",
         productName: "Super Star Car",
         productVersion: "1.0.0"

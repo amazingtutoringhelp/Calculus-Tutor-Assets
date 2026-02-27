@@ -63,7 +63,7 @@
         dataUrl: buildUrl + "/v1.04.2w.data.unityweb",
         frameworkUrl: buildUrl + "/v1.04.2w.framework.js.unityweb",
         codeUrl: buildUrl + "/v1.04.2w.wasm.unityweb",
-        streamingAssetsUrl: "StreamingAssets",
+        streamingAssetsUrl: new URL("StreamingAssets", document.baseURI).href,
         companyName: "JokuPelle",
         productName: "Ages of Conflict",
         productVersion: "1.04.2",
